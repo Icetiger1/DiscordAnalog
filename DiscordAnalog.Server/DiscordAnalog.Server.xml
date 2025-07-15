@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DiscordAnalog.Server</name>
+    </assembly>
+    <members>
+        <member name="M:DiscordAnalog.Server.API.Controllers.AuthController.Register(DiscordAnalog.Server.API.Controllers.AuthRequest)">
+            <summary>
+            Регистрация нового пользователя
+            </summary>
+            <param name="request">запрос</param>
+            <returns></returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.AuthController.Login(DiscordAnalog.Server.API.Controllers.AuthRequest)">
+            <summary>
+            Вход в систему
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+        <member name="T:DiscordAnalog.Server.API.Controllers.AuthRequest">
+            <summary>
+            Модель запроса авторизации
+            </summary>
+            <param name="Username">имя пользователя</param>
+            <param name="Password">пароль пользователя</param>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.AuthRequest.#ctor(System.String,System.String)">
+            <summary>
+            Модель запроса авторизации
+            </summary>
+            <param name="Username">имя пользователя</param>
+            <param name="Password">пароль пользователя</param>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.AuthRequest.Username">
+            <summary>имя пользователя</summary>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.AuthRequest.Password">
+            <summary>пароль пользователя</summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.API.Controllers.AuthResponse">
+            <summary>
+            Модель ответа на запрос
+            </summary>
+            <param name="Token">токен авторизации пользователя</param>
+            <param name="Username">имя пользователя</param>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.AuthResponse.#ctor(System.String,System.String)">
+            <summary>
+            Модель ответа на запрос
+            </summary>
+            <param name="Token">токен авторизации пользователя</param>
+            <param name="Username">имя пользователя</param>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.AuthResponse.Token">
+            <summary>токен авторизации пользователя</summary>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.AuthResponse.Username">
+            <summary>имя пользователя</summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UsersController.GetUsers">
+            <summary>
+            Получения списка всех пользователей
+            </summary>
+            <returns></returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UsersController.GetUserByName(System.String)">
+            <summary>
+            Поиск пользователя по имени
+            </summary>
+            <param name="username">Имя пользователя</param>
+            <returns></returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UsersController.GetUserById(System.String)">
+            <summary>
+            Поиск пользователя по Id
+            </summary>
+            <param name="id">Id пользователя</param>
+            <returns></returns>
+            <response code="200">Успешное выполнение</response>
+            <response code="400">Ошибка API</response>
+        </member>
+        <member name="T:DiscordAnalog.Server.API.Controllers.UserbyNameRequest">
+            <summary>
+            Запрос пользователя по имени
+            </summary>
+            <param name="Username">имя пользователя</param>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UserbyNameRequest.#ctor(System.String)">
+            <summary>
+            Запрос пользователя по имени
+            </summary>
+            <param name="Username">имя пользователя</param>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.UserbyNameRequest.Username">
+            <summary>имя пользователя</summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.API.Controllers.UserbyIdRequest">
+            <summary>
+            Запрос пользователя по Id
+            </summary>
+            <param name="Id">Id пользователя</param>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UserbyIdRequest.#ctor(System.String)">
+            <summary>
+            Запрос пользователя по Id
+            </summary>
+            <param name="Id">Id пользователя</param>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.UserbyIdRequest.Id">
+            <summary>Id пользователя</summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.API.Controllers.UserResponse">
+            <summary>
+            Модель ответа на запрос
+            </summary>
+            <param name="Id">Id пользователя</param>
+            <param name="Username">имя пользователя</param>
+            <param name="HashPassword">хэш пароля пользователя</param>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Controllers.UserResponse.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Модель ответа на запрос
+            </summary>
+            <param name="Id">Id пользователя</param>
+            <param name="Username">имя пользователя</param>
+            <param name="HashPassword">хэш пароля пользователя</param>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.UserResponse.Id">
+            <summary>Id пользователя</summary>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.UserResponse.Username">
+            <summary>имя пользователя</summary>
+        </member>
+        <member name="P:DiscordAnalog.Server.API.Controllers.UserResponse.HashPassword">
+            <summary>хэш пароля пользователя</summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Extensions.ServiceExtensions.AddDatabaseContext(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary> Добавляет БД с поддержкой разных провайдеров </summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Extensions.ServiceExtensions.AddSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary> Регистрация Swagger </summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Extensions.ServiceExtensions.AddJwtAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>  Регистрация аутентификации </summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Extensions.ServiceExtensions.AddApplicationServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary> Добавляет кастомные сервисы </summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Hubs.ChatHub.JoinRoom(System.Int32)">
+            <summary> Подключение к каналу + загрузка истории </summary>
+        </member>
+        <member name="M:DiscordAnalog.Server.API.Hubs.ChatHub.SendMessage(System.String,System.String)">
+            <summary> Отправка нового сообщения </summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.Infrastructure.Data.AppDbContext">
+            <summary> Контекст БД (поддерживает PostgreSQL и другие провайдеры) </summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.Infrastructure.Repositories.UserRepository">
+            <summary> Реализация репозитория пользователей </summary>
+        </member>
+        <member name="T:DiscordAnalog.Server.Infrastructure.Services.TokenService">
+            <summary> Генерация и валидация JWT-токенов </summary>
+        </member>
+    </members>
+</doc>

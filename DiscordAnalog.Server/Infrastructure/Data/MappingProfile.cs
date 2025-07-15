@@ -1,12 +1,17 @@
 ﻿using AutoMapper;
-using DiscordAnalog.Server.API.Extensions;
-using DiscordAnalog.Server.Core.DTOs;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using DiscordAnalogModelsClassLibrary.Core.DTOs;
+using DiscordAnalogModelsClassLibrary.Core.Entities;
 
 namespace DiscordAnalog.Server.Infrastructure.Data
 {
+    /// <summary>
+    /// MappingProfile
+    /// </summary>
     public class MappingProfile : Profile
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public MappingProfile()
         {
             CreateMap<Message, MessageDto>()

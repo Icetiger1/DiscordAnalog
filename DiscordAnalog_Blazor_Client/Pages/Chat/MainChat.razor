@@ -1,0 +1,53 @@
+﻿@page "/chat"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.SignalR.Client
+@attribute [Authorize]
+@inject HubConnectionService HubService
+@implements IAsyncDisposable
+
+<div class="chat-container">
+    <div class="channels">
+        <h3>Text Channels</h3>
+        <ul>
+            @foreach (var channel in new[] { "general", "random" })
+            {
+                <li @onclick="() => JoinChannel(channel)">@channel</li>
+            }
+        </ul>
+    </div>
+
+    <div class="messages">
+        <TextChannel />
+    </div>
+</div>
+
+@code {
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = HubService.GetConnection();
+
+        await hubConnection.StartAsync();
+    }
+
+    private async Task JoinChannel(string channelName)
+    {
+        if (hubConnection is not null)
+        {
+            // Явно указываем тип возвращаемого значения (void)
+            await hubConnection.InvokeAsync<object>("JoinRoom", channelName);
+
+            // Или альтернативный вариант без возвращаемого значения:
+            // await hubConnection.SendAsync("JoinRoom", channelName);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.DisposeAsync();
+        }
+    }
+}

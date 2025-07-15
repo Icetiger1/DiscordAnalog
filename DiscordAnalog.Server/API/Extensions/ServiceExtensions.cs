@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using DiscordAnalog.Server.Core.Interfaces;
 using DiscordAnalog.Server.Infrastructure.Data;
 using DiscordAnalog.Server.Infrastructure.Repositories;
 using DiscordAnalog.Server.Infrastructure.Services;
+using DiscordAnalogModelsClassLibrary.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -14,19 +14,23 @@ namespace DiscordAnalog.Server.API.Extensions
 {
     public static class ServiceExtensions
     {
-        /// <summary> Добавляет БД с поддержкой разных провайдеров </summary>
+        /// <summary> 
+        /// Добавляет БД с поддержкой разных провайдеров 
+        /// </summary>
         public static IServiceCollection AddDatabaseContext(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                // Можно легко заменить на SQL Server, SQLite и т.д.
+                // Можно заменить на SQL Server, SQLite и т.д.
                 options.UseNpgsql(config.GetConnectionString("PostgreSQL"));
             });
 
             return services;
         }
 
-        /// <summary> Регистрация Swagger </summary>
+        /// <summary> 
+        /// Регистрация Swagger 
+        /// </summary>
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
@@ -56,12 +60,19 @@ namespace DiscordAnalog.Server.API.Extensions
                         new List<string>()
                     }
                 });
+
+                var basePath = AppContext.BaseDirectory;
+
+                var xmlPath = Path.Combine(basePath, "DiscordAnalog.Server.xml");
+                c.IncludeXmlComments(xmlPath);
             });
 
             return services;
         }
 
-        /// <summary>  Регистрация аутентификации </summary>
+        /// <summary>  
+        /// Регистрация аутентификации 
+        /// </summary>
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -83,7 +94,9 @@ namespace DiscordAnalog.Server.API.Extensions
             return services;
         }
 
-        /// <summary> Добавляет кастомные сервисы </summary>
+        /// <summary> 
+        /// Добавляем кастомные сервисы 
+        /// </summary>
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             // Репозитории

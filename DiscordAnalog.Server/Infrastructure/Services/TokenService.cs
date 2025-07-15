@@ -1,9 +1,9 @@
-﻿using DiscordAnalog.Server.API.Extensions;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using DiscordAnalog.Server.Core.Interfaces;
+using DiscordAnalogModelsClassLibrary.Core.Interfaces;
+using DiscordAnalogModelsClassLibrary.Core.Entities;
 
 namespace DiscordAnalog.Server.Infrastructure.Services
 {

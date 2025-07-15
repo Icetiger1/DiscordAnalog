@@ -1,0 +1,27 @@
+﻿@page "/login"
+@inject AuthService Auth
+@inject NavigationManager Navigation
+
+<EditForm Model="@model" OnValidSubmit="@HandleLogin">
+    <InputText @bind-Value="model.Username" placeholder="Username" />
+    <InputText @bind-Value="model.Password" type="password" placeholder="Password" />
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel model = new();
+
+    private async Task HandleLogin()
+    {
+        if (await Auth.LoginAsync(model.Username, model.Password))
+        {
+            Navigation.NavigateTo("/chat");
+        }
+    }
+
+    private class LoginModel
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+}

@@ -1,21 +1,52 @@
-﻿using DiscordAnalog.Server.API.Extensions;
-using DiscordAnalog.Server.Core.Entities;
+﻿using DiscordAnalogModelsClassLibrary.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DiscordAnalog.Server.Infrastructure.Data
 {
-    /// <summary> Контекст БД (поддерживает PostgreSQL и другие провайдеры) </summary>
+    /// <summary> 
+    /// Контекст БД (поддерживает PostgreSQL и другие провайдеры) 
+    /// </summary>
     public class AppDbContext : DbContext
     {
+        /// <summary>
+        /// Схема БД
+        /// </summary>
+        public static readonly string Schema = "public";
+
+        /// <summary>
+        /// Конструктор AppDbContext
+        /// </summary>
+        /// <param name="options">base</param>
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // Добавляем DbSet 
+        /// <summary>
+        /// ChatRooms DbSet
+        /// </summary>
         public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>();
+
+        /// <summary>
+        /// Users DbSet
+        /// </summary>
         public DbSet<User> Users => Set<User>();
+
+        /// <summary>
+        /// Messages DbSet
+        /// </summary>
         public DbSet<Message> Messages => Set<Message>();
 
+        /// <summary>
+        ///  
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema(Schema);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(
+                typeof(AppDbContext).Assembly,
+                t => t.Namespace == typeof(Message).Namespace
+            );
+
             // Конфигурация отношений
             modelBuilder.Entity<Message>()
                 .HasOne(m => m.User)
@@ -29,11 +60,6 @@ namespace DiscordAnalog.Server.Infrastructure.Data
                 .HasForeignKey(m => m.ChatRoomId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // При необходимости можно добавить начальные данные
-            modelBuilder.Entity<ChatRoom>().HasData(
-                new ChatRoom { Id = 1, Name = "General" },
-                new ChatRoom { Id = 2, Name = "Random" }
-            );
         }
     }
 }

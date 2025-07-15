@@ -1,0 +1,53 @@
+﻿@page "/voice/{ChannelId}"
+@using DiscordAnalogModelsClassLibrary.Core.DTOs;
+@using DiscordAnalogModelsClassLibrary.Core.Entities;
+@inject NavigationManager Navigation
+@implements IAsyncDisposable
+
+<div class="voice-channel">
+    <h3>Voice Channel</h3>
+
+    <div class="participants">
+        @foreach (var user in participants)
+        {
+            <div class="participant">
+                <span>@user.User.Username</span>
+                <audio controls></audio>
+            </div>
+        }
+    </div>
+
+    <button @onclick="JoinVoice">Join Voice</button>
+    <button @onclick="LeaveVoice">Leave</button>
+</div>
+
+@code {
+    [Parameter] public string ChannelId { get; set; } = string.Empty;
+    private List<AuthDto> participants = new();
+    private bool isInVoice = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Инициализация WebRTC соединения
+    }
+
+    private async Task JoinVoice()
+    {
+        // Логика подключения к голосовому каналу
+        isInVoice = true;
+    }
+
+    private async Task LeaveVoice()
+    {
+        // Логика отключения от канала
+        isInVoice = false;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (isInVoice)
+        {
+            await LeaveVoice();
+        }
+    }
+}

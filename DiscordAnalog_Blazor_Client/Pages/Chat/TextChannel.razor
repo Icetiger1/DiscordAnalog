@@ -1,0 +1,64 @@
+﻿@using DiscordAnalogModelsClassLibrary.Core.DTOs
+@using Microsoft.AspNetCore.SignalR.Client
+@inject ChatService ChatService
+@inject HubConnectionService HubService
+
+<div class="text-channel">
+    @if (messages.Count == 0)
+    {
+        <p>No messages yet</p>
+    }
+    else
+    {
+        <div class="messages-list">
+            @foreach (var msg in messages)
+            {
+                <div class="message">
+                    <span class="username">@msg.Username</span>
+                    <span class="content">@msg.Content</span>
+                    <span class="timestamp">@msg.Timestamp</span>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="message-input">
+        <input @bind="newMessage" @onkeypress="HandleKeyPress" />
+        <button @onclick="SendMessage">Send</button>
+    </div>
+</div>
+
+@code {
+    private List<MessageDto> messages = new();
+    private string newMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        messages = await ChatService.GetChannelMessagesAsync("general");
+        var connection = HubService.GetConnection();
+
+        connection.On<MessageDto>("ReceiveMessage", message =>
+        {
+            messages.Add(message);
+            StateHasChanged();
+        });
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(newMessage))
+        {
+            var connection = HubService.GetConnection();
+            await connection.SendAsync("SendTextMessage", "general", newMessage);
+            newMessage = string.Empty;
+        }
+    }
+
+    private async Task HandleKeyPress(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await SendMessage();
+        }
+    }
+}

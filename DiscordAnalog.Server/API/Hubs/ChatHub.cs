@@ -1,27 +1,36 @@
 ﻿using AutoMapper;
-using DiscordAnalog.Server.API.Extensions;
-using DiscordAnalog.Server.Core.DTOs;
-using DiscordAnalog.Server.Core.Interfaces;
+using DiscordAnalogModelsClassLibrary.Core.DTOs;
+using DiscordAnalogModelsClassLibrary.Core.Entities;
+using DiscordAnalogModelsClassLibrary.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 
 namespace DiscordAnalog.Server.API.Hubs
 {
+    /// <summary>
+    /// ChatHub
+    /// </summary>
     [Authorize]
     public class ChatHub : Hub
     {
         private readonly IChatRoomRepository _roomRepo;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roomRepo"></param>
+        /// <param name="mapper"></param>
         public ChatHub(IChatRoomRepository roomRepo, IMapper mapper)
         {
             _roomRepo = roomRepo;
             _mapper = mapper;
         }
 
-        /// <summary> Подключение к каналу + загрузка истории </summary>
+        /// <summary> 
+        /// Подключение к каналу + загрузка истории 
+        /// </summary>
         public async Task JoinRoom(int roomId)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, $"room-{roomId}");
@@ -32,10 +41,12 @@ namespace DiscordAnalog.Server.API.Hubs
             await Clients.Caller.SendAsync("ReceiveMessagesHistory", dtos);
         }
 
-        /// <summary> Отправка нового сообщения </summary>
-        public async Task SendMessage(int roomId, string text)
+        /// <summary>
+        /// Отправка нового сообщения 
+        /// </summary>
+        public async Task SendMessage(string roomId, string text)
         {
-            var userId = int.Parse(Context.User!.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var userId = Context.User!.FindFirstValue(ClaimTypes.NameIdentifier)!;
 
             var message = new Message
             {
@@ -45,7 +56,7 @@ namespace DiscordAnalog.Server.API.Hubs
                 Timestamp = DateTime.UtcNow
             };
 
-            await _roomRepo.AddMessageAsync(roomId, message);
+            await _roomRepo.AddMessageAsync(int.Parse(roomId), message);
 
             var dto = _mapper.Map<MessageDto>(message);
             dto.Username = Context.User!.Identity!.Name!;
@@ -53,9 +64,13 @@ namespace DiscordAnalog.Server.API.Hubs
             await Clients.Group($"room-{roomId}").SendAsync("ReceiveNewMessage", dto);
         }
 
+        /// <summary>
+        /// Логика при отключении (необязательно)
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            // Логика при отключении (необязательно)
             await base.OnDisconnectedAsync(exception);
         }
     }
